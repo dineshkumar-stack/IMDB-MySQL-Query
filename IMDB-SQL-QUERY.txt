@@ -1,0 +1,108 @@
+// @@@@@@@@@@@@@@@ IMDB Design a DB for IMDB @@@@@@@@@@@@@@@@
+
+1. Movie should have multiple media(Video or Image) 
+2. Movie can belongs to multiple Genre 
+3. Movie can have multiple reviews and Review can belongs to a user 
+4. Artist can have multiple skills 
+5. Artist can perform multiple role in a single film
+
+// Note
+
+// mov_id = Movie,
+// med_id = Media,
+// gen_id = genre,
+// rev_id = review,
+
+/ @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+////////                  Query               ////////////
+
+Code start from here
+
+CREATE TABLE Movie (
+    mov_id INT PRIMARY KEY,
+    title VARCHAR(255),
+    release_date DATE,
+    duration INT,
+    description TEXT
+):
+
+
+CREATE TABLE Media (
+   med_id INT PRIMARY KEY,
+   mov_id INT,
+   media_type ENUM('video', 'image'),
+   media_url VARCHAR (255),
+   FOREIGN KEY (mov_id) REFERENCES Movie(mov_id)
+);
+
+
+CREATE TABLE Genre (
+    gen_id INT PRIMARY KEY,
+    genre_name VARCHAR(255),
+);
+
+
+CREATE TABLE Movie_Genere (
+    mov_id INT,
+    genere_id INT,
+    PRIMARY KEY (mov_id, genere_id)
+    FOREIGN KEY (mov_id) REFERENCES (mov_id),
+    FOREIGN KEY (genere_id) REFERENCES (genere_id),
+);
+
+
+CREATE TABLE User (
+    user_id INT PRIMARY KEY,
+    user_name VARCHAR(255),
+    user_email VARCHAR(255)
+);
+
+
+CREATE TABLE Review (
+    rev_id INT PRIMARY KEY,
+    mov_id INT,
+    user_id INT,
+    rating DECIMAL(3,2),
+    review_text TEXT,
+    review_date DATE,
+    FOREIGN KEY (mov_id) REFERENCES(mov_id)
+    FOREIGN KEY (user_id) REFERENCES(user_id),
+)
+
+
+CREATE TABLE Artist (
+    art_id INT PRIMARY KEY,
+    artist_name VARCHAR(255)
+)
+
+
+CREATE TABLE Skill (
+    skill_id INT PRIMARY KEY,
+    skill_name VARCHAR(255)
+)
+
+
+CREATE TABLE Artist_Skill (
+    skill_id INT,
+    art_id INT,
+    PRIMARY KEY(skill_id, art_id),
+    FOREIGN KEY (skill_id) REFERENCES(skill_id)
+    FOREIGN KEY (art_id) REFERENCES(art_id)
+)
+
+
+CREATE TABLE Role (
+    role_id INT PRIMARY KEY,
+    role_name VARCHAR(255)
+)
+
+CREATE TABLE Movie_Artist_Role (
+    mov_id INT
+    art_id INT
+    role_id INT
+    PRIMARY KEY (mov_id, art_id, role_id)
+    FOREIGN KEY (mov_id) REFERENCES(mov_id)
+    FOREIGN KEY (art_id) REFERENCES(art_id)
+    FOREIGN KEY (role_id) REFERENCES(role_id)
+)
